@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Support Portal - Assets</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="dashboard-container">
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon">IT</div>
+            <div>
+                <h2>IT Support</h2>
+                <span>Portal</span>
+            </div>
+        </div>
+        <nav class="sidebar-menu">
+            <p class="menu-title">MAIN</p>
+            <a href="dashboard.html" class="menu-item"><span class="menu-icon">▦</span><span>Dashboard</span></a>
+            <a href="tickets.html" class="menu-item"><span class="menu-icon">🎫</span><span>Tickets</span></a>
+            <a href="users.html" class="menu-item"><span class="menu-icon">👥</span><span>Users</span></a>
+            <a href="assets.html" class="menu-item active"><span class="menu-icon">💻</span><span>Assets</span></a>
+            <a href="remote.html" class="menu-item"><span class="menu-icon">🖥</span><span>Remote Access</span></a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div class="header-left">
+                <div>
+                    <h1>Assets</h1>
+                    <p>Hardware inventory, check-in and check-out</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+        </header>
+
+        <section class="dashboard-content">
+            <div class="stats-grid asset-stats-grid">
+                <div class="dashboard-card">
+                    <h3>Total Assets</h3>
+                    <h1 id="asset-total">0</h1>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>Deployed</h3>
+                    <h1 id="asset-deployed">0</h1>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>Ready to Deploy</h3>
+                    <h1 id="asset-ready">0</h1>
+                </div>
+
+                <div class="dashboard-card">
+                    <h3>Pending</h3>
+                    <h1 id="asset-pending">0</h1>
+                </div>
+            </div>
+
+            <!-- Dynamic Table -->
+            <div class="remote-main dashboard-card">
+                <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h3>Asset Inventory</h3>
+                        <input
+                            type="text"
+                            id="assetSearch"
+                            placeholder="Search Asset..."
+                            style="margin-top:10px;padding:8px;width:300px;max-width:100%;">
+                    </div>
+                    <button class="create-ticket-btn" id="openAssetModal">+ Add Asset</button>
+                </div>
+                <div class="table-container" style="overflow-x: auto;">
+                    <table style="white-space: nowrap; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>Asset Name</th>
+                                <th>Device Image</th>
+                                <th>Asset Tag</th>
+                                <th>Serial</th>
+                                <th>Model</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>Assigned To</th>
+                                <th>Location</th>
+                                <th>Purchase Cost</th>
+                                <th>Current Value</th>
+                                <th>Desk Number</th>
+                                <th>Check In/Out</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="assetTableBody">
+                            <!-- JavaScript will inject rows here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- ================= ADD / EDIT ASSET MODAL ================= -->
+<div class="modal" id="assetModal">
+    <div class="modal-content" style="width: 800px;">
+        <div class="modal-header">
+            <div><h2 id="assetModalTitle">Add New Asset</h2></div>
+            <button class="close-modal" id="closeAssetModal" aria-label="Close">X</button>
+        </div>
+        <form id="assetForm" style="padding: 20px;">
+            <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div class="form-group"><label>Asset Name</label><input type="text" id="assetName" required></div>
+                <div class="form-group"><label>Asset Tag</label><input type="text" id="assetTag" required></div>
+
+                <div class="form-group"><label>Serial Number</label><input type="text" id="assetSerial"></div>
+                <div class="form-group"><label>Model</label><input type="text" id="assetModel" required></div>
+
+                <div class="form-group"><label>Category</label><input type="text" id="assetCategory"></div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="assetStatus">
+                        <option value="Ready to Deploy">Ready to Deploy</option>
+                        <option value="Deployed">Deployed</option>
+                        <option value="Pending">Pending</option>
+                    </select>
+                </div>
+
+                <div class="form-group"><label>Checked Out To</label><input type="text" id="assetCheckedOut"></div>
+                <div class="form-group"><label>Location</label><input type="text" id="assetLocation"></div>
+
+                <div class="form-group"><label>Purchase Cost ($)</label><input type="number" id="assetCost" step="0.01" value="0.00"></div>
+                <div class="form-group"><label>Current Value ($)</label><input type="number" id="assetValue" step="0.01" value="0.00"></div>
+
+                <div class="form-group"><label>Desk Number</label><input type="text" id="assetDesk"></div>
+                <div class="form-group"><label>Device Image URL</label><input type="text" id="assetImage" placeholder="http://..."></div>
+            </div>
+
+            <div class="modal-actions" style="margin-top: 20px;">
+                <button type="button" class="cancel-btn" id="cancelAsset">Cancel</button>
+                <button type="submit" class="create-ticket-btn">Save Asset</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

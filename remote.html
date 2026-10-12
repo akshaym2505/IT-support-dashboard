@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT Support Portal - Remote Access</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="dashboard-container">
+
+    <!-- ================= SIDEBAR (Same as your other pages) ================= -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon">IT</div>
+            <div>
+                <h2>IT Support</h2>
+                <span>Portal</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-menu">
+            <p class="menu-title">MAIN</p>
+            <a href="dashboard.html" class="menu-item"><span class="menu-icon">▦</span><span>Dashboard</span></a>
+            <a href="tickets.html" class="menu-item"><span class="menu-icon">🎫</span><span>Tickets</span></a>
+            <a href="users.html" class="menu-item"><span class="menu-icon">👥</span><span>Users</span></a>
+            <a href="assets.html" class="menu-item"><span class="menu-icon">💻</span><span>Assets</span></a>
+            <!-- Remote Page is now Active -->
+            <a href="remote.html" class="menu-item active"><span class="menu-icon">🖥</span><span>Remote Access</span></a>
+            <a href="#" class="menu-item"><span class="menu-icon">🌐</span><span>Network</span></a>
+        </nav>
+    </aside>
+
+    <!-- ================= MAIN ================= -->
+    <main class="main-content">
+
+        <header class="top-header">
+            <div class="header-left">
+                <div>
+                    <h1>Remote Access</h1>
+                    <p>Endpoint Management & Control</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="create-ticket-btn" onclick="openBuildInstaller()">+ Build Installer</button>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+        </header>
+
+        <section class="dashboard-content">
+            
+            <div class="remote-split-view">
+                
+                <!-- Left Pane: Groups -->
+                <div class="remote-sidebar dashboard-card">
+                    <div class="card-header">
+                        <h3>Session Groups</h3>
+                    </div>
+                    <ul class="group-list">
+                        <li class="active" data-group="all">All Machines <span id="count-all">(0)</span></li>
+                        <li data-group="servers">Servers <span id="count-servers">(0)</span></li>
+                        <li data-group="workstations">Workstations <span id="count-workstations">(0)</span></li>
+                        <li data-group="offline">Offline <span id="count-offline">(0)</span></li>
+                    </ul>
+                </div>
+
+                <!-- Right Pane: Machine List -->
+                <div class="remote-main dashboard-card">
+    <div class="card-header" style="display: flex; justify-content: space-between; align-items: center;">
+        <h3>Company Endpoints (Mac / Linux / Windows)</h3>
+        <input type="text" id="remoteSearch" placeholder="Filter by OS, hostname, or user..." style="padding: 8px; border-radius: 6px; border: 1px solid #ccc; max-width: 100%;">
+    </div>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Status</th>
+                    <th>OS Platform</th>
+                    <th>Hostname</th>
+                    <th>IP Address</th>
+                    <th>Logged User</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="remoteMachineList">
+                <!-- Javascript dynamically injects machines here -->
+            </tbody>
+        </table>
+    </div>
+</div>
+
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- EMBEDDED SESSION MODAL -->
+<div class="modal" id="remoteSessionModal">
+    <div class="modal-content" style="width: 90%; height: 85vh; padding: 15px;">
+        <div class="modal-header" style="display: flex; justify-content: space-between;">
+            <h2 id="sessionModalTitle">Remote Session</h2>
+            <button class="close-modal" onclick="closeRemoteSession()">X</button>
+        </div>
+        <iframe id="remoteSessionFrame" style="width: 100%; height: calc(100% - 40px); border: none; border-radius: 6px; margin-top: 10px;"></iframe>
+    </div>
+</div>
+
+
+<!-- BUILD INSTALLER MODAL (ConnectWise Style) -->
+<div class="modal" id="buildInstallerModal">
+    <div class="modal-content" style="max-width: 520px; padding: 25px; border-radius: 8px; background: #ffffff; color: #333; text-align: left;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h2 style="margin: 0; font-size: 20px; font-weight: bold; color: #1e293b;">Build Installer</h2>
+            <button type="button" aria-label="Close" style="font-size: 22px; cursor: pointer; color: #64748b; background: none; border: none;" onclick="closeBuildInstaller()">&times;</button>
+        </div>
+        
+        <p style="font-size: 13px; color: #475569; margin-bottom: 10px; line-height: 1.4;">
+            Build an installer to deploy to remote machines and permanently install the access agent. After installation, the agent will appear in the Access section.
+        </p>
+        <p style="font-size: 13px; color: #475569; margin-bottom: 20px; line-height: 1.4;">
+            Label your machines using the following fields, and pick your installer type:
+        </p>
+        
+        <form id="installerForm" style="display: flex; flex-direction: column; gap: 10px;" onsubmit="return false;">
+            <div style="display: grid; grid-template-columns: 160px 1fr; align-items: center; font-size: 13px;">
+                <label for="instPortalUrl" style="color: #64748b; font-weight: 500;">Portal Server URL:</label>
+                <input type="url" id="instPortalUrl" placeholder="http://192.168.1.20:8000" style="padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 4px;">
+            </div>
+            <p id="instPortalHint" class="installer-hint" style="margin: -4px 0 0 160px;"></p>
+
+            <div style="display: grid; grid-template-columns: 160px 1fr; align-items: center; font-size: 13px;">
+                <label for="instName" style="color: #64748b; font-weight: 500;">Name:</label>
+                <select id="instName" style="padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 4px; outline: none;">
+                    <option value="Use Machine Name">Use Machine Name</option>
+                    <option value="Custom Name">Custom Name</option>
+                </select>
+            </div>
+
+            <div id="instCustomNameRow" hidden style="display: grid; grid-template-columns: 160px 1fr; align-items: center; font-size: 13px;">
+                <label for="instCustomName" style="color: #64748b; font-weight: 500;">Custom Name:</label>
+                <input type="text" id="instCustomName" maxlength="63" placeholder="e.g. Reception-PC" style="padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 4px;">
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 160px 1fr; align-items: center; font-size: 13px;">
+                <label for="instCompany" style="color: #64748b; font-weight: 500;">Company:</label>
+                <input type="text" id="instCompany" placeholder="e.g. MyCompany" style="padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 4px;">
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 160px 1fr; align-items: center; font-size: 13px;">
+                <label for="instSite" style="color: #64748b; font-weight: 500;">Site:</label>
+                <input type="text" id="instSite" placeholder="e.g. Head Office" style="padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 4px;">
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 160px 1fr; align-items: center; font-size: 13px;">
+                <label for="instDept" style="color: #64748b; font-weight: 500;">Department:</label>
+                <input type="text" id="instDept" placeholder="e.g. IT / Finance" style="padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 4px;">
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 160px 1fr; align-items: center; font-size: 13px;">
+                <label for="instDeviceType" style="color: #64748b; font-weight: 500;">Device Type:</label>
+                <input type="text" id="instDeviceType" placeholder="e.g. Workstation" style="padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 4px;">
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 160px 1fr; align-items: center; font-size: 13px;">
+                <label for="instLockExt" style="color: #64748b; font-weight: 500;">Selective Lock On Disconnect Extension:</label>
+                <input type="text" id="instLockExt" style="padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 4px;">
+            </div>
+            
+            <div style="display: grid; grid-template-columns: 160px 1fr; align-items: center; font-size: 13px;">
+                <label for="instType" style="color: #64748b; font-weight: 500;">Type:</label>
+                <select id="instType" style="padding: 6px 10px; border: 1px solid #cbd5e1; border-radius: 4px; outline: none;">
+                    <option value="windows">Windows (.exe)</option>
+                    <option value="linux">Linux (.sh)</option>
+                    <option value="python">Python Agent (.py)</option>
+                </select>
+            </div>
+            <p id="instTypeHint" class="installer-hint warning" style="margin: -4px 0 0 160px;"></p>
+        </form>
+        
+        <p style="font-size: 13px; color: #475569; margin-top: 20px; margin-bottom: 15px;">
+            Select an option to share your installer:
+        </p>
+        
+        <div style="display: flex; justify-content: flex-end; gap: 20px; font-size: 13px; font-weight: bold;">
+            <button type="button" onclick="sendInstallerLink()" style="background: none; border: none; color: #2563eb; cursor: pointer;">SEND LINK ▽</button>
+            <button type="button" onclick="copyInstallerUrl()" style="background: none; border: none; color: #2563eb; cursor: pointer;">COPY URL ▽</button>
+            <button type="button" id="installerDownloadBtn" onclick="generateAndDownloadInstaller()" style="background: none; border: none; color: #2563eb; cursor: pointer;">DOWNLOAD</button>
+        </div>
+    </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>

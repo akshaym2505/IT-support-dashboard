@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Fluid - Login</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="fluid-login-body">
+
+    <div class="fluid-login-wrapper">
+
+        <!-- LEFT PANEL: FORM -->
+        <div class="fluid-login-left">
+            <h2>Welcome to Fluid</h2>
+            
+            <form id="loginForm" class="fluid-form">
+                
+                <div class="input-group">
+                    <label>Username</label>
+                    <div class="input-with-icon">
+                        <span class="icon">✉️</span>
+                        <!-- Kept id="username" so your app.js still works perfectly! -->
+                        <input type="text" id="username" placeholder="Admin" required>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label>Password</label>
+                    <div class="input-with-icon">
+                        <span class="icon">🔒</span>
+                        <input type="password" id="password" placeholder="••••••••" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="fluid-login-btn">Log in</button>
+
+            </form>
+            
+            <p class="signup-text">Don't have an account? <a href="#">Sign Up!</a></p>
+            
+            <hr class="fluid-divider">
+            
+            <div class="fluid-faq">
+                <h4>❓ Can you change your plan?</h4>
+                <p>Whenever you want. Fluid will also change with you according to your needs.</p>
+                <a href="#">Contact Us</a>
+            </div>
+        </div>
+        
+        <!-- RIGHT PANEL: IMAGE -->
+        <div class="fluid-login-right">
+            <img src="IT support.png" alt="IT Support" class="fluid-image">
+        </div>
+
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

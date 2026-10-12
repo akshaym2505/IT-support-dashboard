@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Details - IT Support Portal</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="dashboard-container">
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon">IT</div>
+            <div>
+                <h2>IT Support</h2>
+                <span>Portal</span>
+            </div>
+        </div>
+        <nav class="sidebar-menu">
+            <p class="menu-title">MAIN</p>
+            <a href="dashboard.html" class="menu-item"><span class="menu-icon">▦</span><span>Dashboard</span></a>
+            <a href="tickets.html" class="menu-item active"><span class="menu-icon">🎫</span><span>Tickets</span></a>
+            <a href="users.html" class="menu-item"><span class="menu-icon">👥</span><span>Users</span></a>
+            <a href="assets.html" class="menu-item"><span class="menu-icon">💻</span><span>Assets</span></a>
+            <a href="remote.html" class="menu-item"><span class="menu-icon">🖥</span><span>Remote Access</span></a>
+        </nav>
+    </aside>
+
+    <main class="main-content">
+        <header class="top-header">
+            <div class="header-left">
+                <div>
+                    <a href="tickets.html" class="back-link">← Back to Tickets</a>
+                    <h1 id="detailsTitle">Ticket</h1>
+                    <p id="detailsSubtitle">Loading ticket…</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <span id="detailsStatusPill" class="ticket-status"></span>
+                <span id="detailsPriorityPill" class="priority"></span>
+                <button class="logout-btn" id="logoutBtn">Logout</button>
+            </div>
+        </header>
+
+        <section class="dashboard-content" id="ticketDetailsPage">
+            <!-- Loading / not found / error message -->
+            <div class="dashboard-card details-state" id="detailsState">
+                <p>Loading ticket…</p>
+            </div>
+
+            <div class="ticket-details-layout" id="detailsLayout" hidden>
+                <div class="ticket-details-main">
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div>
+                                <h3>Description</h3>
+                                <p id="detailsCreatedLine"></p>
+                            </div>
+                        </div>
+                        <p class="ticket-description" id="detailsDescription"></p>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header">
+                            <div>
+                                <h3>Notes &amp; Activity</h3>
+                                <p>Discussion for general updates, Internal for IT-only notes, Resolution for the fix. Log time spent on each note.</p>
+                            </div>
+                        </div>
+                        <div class="details-card-body">
+                            <!-- Rendered by mountNotesPanel in js/app.js -->
+                            <div id="detailsNotesPanel"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <aside class="ticket-details-side">
+                    <div class="dashboard-card">
+                        <div class="card-header"><h3>Ticket Details</h3></div>
+                        <form id="detailsForm" class="details-card-body">
+                            <div class="form-group">
+                                <label for="detailsStatus">Status</label>
+                                <select id="detailsStatus">
+                                    <option value="open">Open</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="resolved">Resolved</option>
+                                    <option value="closed">Closed</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="detailsPriority">Priority</label>
+                                <select id="detailsPriority">
+                                    <option value="low">Low</option>
+                                    <option value="medium">Medium</option>
+                                    <option value="high">High</option>
+                                    <option value="critical">Critical</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="detailsCategory">Category</label>
+                                <select id="detailsCategory">
+                                    <option value="hardware">Hardware</option>
+                                    <option value="software">Software</option>
+                                    <option value="network">Network</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="detailsAssigned">Assigned To</label>
+                                <input type="text" id="detailsAssigned" list="assigneeOptions" maxlength="80" placeholder="Unassigned">
+                                <datalist id="assigneeOptions"></datalist>
+                            </div>
+                            <button type="submit" class="create-ticket-btn details-save-btn">Save Changes</button>
+                            <p class="details-save-msg" id="detailsSaveMsg" aria-live="polite"></p>
+                        </form>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header"><h3>Requester</h3></div>
+                        <dl class="details-list">
+                            <dt>Name</dt><dd id="detailsRequester"></dd>
+                            <dt>Email</dt><dd><a id="detailsEmail" href="#"></a></dd>
+                        </dl>
+                    </div>
+
+                    <div class="dashboard-card">
+                        <div class="card-header"><h3>Summary</h3></div>
+                        <dl class="details-list">
+                            <dt>Ticket</dt><dd id="detailsTicketId"></dd>
+                            <dt>Created</dt><dd id="detailsCreated"></dd>
+                            <dt>Assigned</dt><dd id="detailsAssignedSummary"></dd>
+                            <dt>Time spent</dt><dd id="detailsTotalTime">0m</dd>
+                            <dt>Notes</dt><dd id="detailsNoteCounts">No notes yet</dd>
+                        </dl>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    </main>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
